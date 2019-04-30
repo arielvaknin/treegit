@@ -15,6 +15,14 @@ class GitApi:
     def is_bare(self) ->bool:
         return self._repo.bare
 
+    def get_history(self):
+        heads = self._repo.heads
+        master = heads.master
+        log = master.log()
+        print(log)
+
+
+
 
 
 if __name__ == '__main__':
