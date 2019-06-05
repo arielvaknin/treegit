@@ -9,28 +9,49 @@ const radius = 20;
 // input from json
 // ===============
 const dataIn = {
-  allUserNames: ['Ariel Vaknin', 'Michael Farjon'],
+  all_user_names: ['Ariel Vaknin', 'Michael Farjon'],
   nodes: [
-    { id: 1, user_name: 'Ariel Vaknin', date: '19/3/2018', message: 'message 1' },
-    { id: 2, user_name: 'Ariel Vaknin', date: '11/1/2019', message: 'message 2' },
-    { id: 3, user_name: 'Michael Farjon', date: '8/2/2019', message: 'message 3' },
-    { id: 4, user_name: 'Ariel Vaknin', date: '1/4/2019', message: 'message 4' }
+    { id: 1, user_name: 'Ariel Vaknin', category: 'message 1' },
+    { id: 2, user_name: 'Ariel Vaknin', category: 'message 2' },
+    { id: 3, user_name: 'Michael Farjon', category: 'message 3' },
+    { id: 4, user_name: 'Ariel Vaknin', category: 'message 4' }
   ],
   edges: [[1,2], [2,3], [3,4], [2,4]], 
 };
 
 // parse data
 // ==========
-// [rows, cols] = parseData(dataIn);
-//   const firstRow = 100;
-//   const rows = []
+function parseRowsLocation(dataIn){
+  const rowSpacing = 100;
+  const rows1 = Array(dataIn.nodes.length);
+  let rows = []
 
-const rows = [100, 200, 300, 400];
-const cols = [500, 600, 700];
+  for (let i = 0; i< rows1.length; i++) {
+    rows[i] = (i+1)*rowSpacing;
+  }
+
+  // console.log(`rows: ${rows}`);
+  return rows
+}
+
+function parseColLocation(dataIn){
+  const colSpacing = 100;
+  const cols1 = Array(dataIn.all_user_names.length + 1);
+  let cols = []
+
+  for (let i = 0; i< cols1.length; i++) {
+    cols[i] = (i+5)*colSpacing;
+  }
+  // console.log(`cols: ${cols}`);
+  return cols;
+}
+  
+const rows = parseRowsLocation(dataIn);
+const cols = parseColLocation(dataIn);
 
 var usersToColumns = {};
-dataIn.allUserNames = dataIn.allUserNames.concat(['Messages'])
-dataIn.allUserNames.forEach((key, i) => usersToColumns[key] = cols[i]);
+dataIn.all_user_names = dataIn.all_user_names.concat(['Messages'])
+dataIn.all_user_names.forEach((key, i) => usersToColumns[key] = cols[i]);
 
 const arrows = [
   { x1: 500 , y1: 100, x2: 500, y2: 200 },
@@ -88,7 +109,7 @@ export class Shape extends React.Component {
         <Layer>
           {dataIn.nodes.map((item, ind) => (
               <Text 
-                text={`${item.message} ${item.date}`}
+                text={`${item.category}`}
                 x={usersToColumns['Messages']}
                 y={rows[ind] - 10}
                 fontSize='20'
