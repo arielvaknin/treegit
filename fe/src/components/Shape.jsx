@@ -27,12 +27,10 @@ const dataIn = {
 
 const rows = [100, 200, 300, 400];
 const cols = [500, 600, 700];
-// usersToColumns = getUsersToColumns(dataIn.allUserNames, cols);
-const usersToColumns = {
-  'Ariel Vaknin': 500,
-  'Michael Farjon': 600,
-  'Messages': 700
-  };
+
+var usersToColumns = {};
+dataIn.allUserNames = dataIn.allUserNames.concat(['Messages'])
+dataIn.allUserNames.forEach((key, i) => usersToColumns[key] = cols[i]);
 
 const arrows = [
   { x1: 500 , y1: 100, x2: 500, y2: 200 },
@@ -40,9 +38,6 @@ const arrows = [
   { x1: 600 , y1: 300, x2: 500, y2: 400 },
   { x1: 500 , y1: 200, x2: 500, y2: 400 },
 ]
-
-
-
 
 export class Shape extends React.Component {
   render() {
