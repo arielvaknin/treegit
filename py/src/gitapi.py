@@ -6,8 +6,7 @@ and try to understand how to work with it.
 import os
 import time
 from git import Repo, Commit
-
-
+import difflib
 class GitApi:
 
     def __init__(self, file_path):
@@ -54,7 +53,6 @@ class GitApi:
         self._fill_map(history_base)
         for commit in history_base:
             self._find_parents(commit, self.file_path)
-
         return self.edges, self.nodes
 
     def _find_parents(self, child: Commit, file_path):
@@ -85,12 +83,27 @@ class GitApi:
         result['id'] = id
         return result
 
+    @staticmethod
+    def _print_diff(commit_a: Commit, commit_b: Commit):
+        diff = commit_a.diff(commit_b)[0]
+        blob_a = diff.a_blob.data_stream.read().decode()
+        blob_a = blob_a.splitlines()
+        for i, val in enumerate(blob_a):
+            blob_a[i] = '{} {}'.format(i + 1, blob_a[i])
+        blob_a = '\n'.join(blob_a)
 
+        blob_b = diff.b_blob.data_stream.read().decode()
+        blob_b = blob_b.splitlines()
+        for i, val in enumerate(blob_b):
+            blob_b[i] = '{} {}'.format(i + 1, blob_b[i])
+        blob_b = '\n'.join(blob_b)
 
+        for text in difflib.unified_diff(blob_a.split("\n"), blob_b.split("\n")):
+            if text[:3] not in ('+++', '---', '@@ '):
+                print(text)
 
 
 if __name__ == '__main__':
-
     working_directory1 = r"F:\Users\mfarjon154598\PycharmProjects\TreeGitTest"
     file_path1 = r"F:\Users\mfarjon154598\PycharmProjects\TreeGitTest\f1.txt"
     git_api = GitApi(file_path1)
