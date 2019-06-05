@@ -58,7 +58,7 @@ class GitApi:
         self._fill_map(history_base)
         for commit in history_base:
             self._find_parents(commit, self.file_path)
-        # self._print_diff_bc(history_base[0].hexsha, history_base[1].hexsha)
+        # self.print_diff_bc(history_base[0].hexsha, history_base[1].hexsha)
         return self.edges, self.nodes
 
     def _find_parents(self, child: Commit, file_path):
@@ -92,7 +92,7 @@ class GitApi:
     def _hash_to_commit(self, hash_key: str):
         return self._repo.commit(hash_key)
 
-    def _print_diff(self, hash_key_a, hash_key_b):
+    def print_diff(self, hash_key_a, hash_key_b):
         commit_a = self._hash_to_commit(hash_key_a)
         commit_b = self._hash_to_commit(hash_key_b)
         diff = commit_a.diff(commit_b)[0]
@@ -112,7 +112,7 @@ class GitApi:
             if text[:3] not in ('+++', '---', '@@ '):
                 print(text)
 
-    def _print_diff_bc(self, hash_key_a, hash_key_b):
+    def print_diff_bc(self, hash_key_a, hash_key_b):
         commit_a = self._hash_to_commit(hash_key_a)
         commit_b = self._hash_to_commit(hash_key_b)
         diff = commit_a.diff(commit_b)[0]
