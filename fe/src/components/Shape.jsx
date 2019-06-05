@@ -49,16 +49,16 @@ function parseColLocation(dataIn){
 const rows = parseRowsLocation(dataIn);
 const cols = parseColLocation(dataIn);
 
-var usersToColumns = {};
+let usersToColumns = {};
 dataIn.all_user_names = dataIn.all_user_names.concat(['Messages'])
 dataIn.all_user_names.forEach((key, i) => usersToColumns[key] = cols[i]);
 
-var arrows = [];
-var i = 0
+let arrows = [];
+let i = 0
 for (i ; i < dataIn.edges.length; i++) {
   
-  var user_name_1 = dataIn.nodes.find( node => node.id === dataIn.edges[i][0] ).user_name;
-  var user_name_2 = dataIn.nodes.find( node => node.id === dataIn.edges[i][1] ).user_name;
+  const user_name_1 = dataIn.nodes.find( node => node.id === dataIn.edges[i][0] ).user_name;
+  const user_name_2 = dataIn.nodes.find( node => node.id === dataIn.edges[i][1] ).user_name;
 
   arrows[i] = {};
   arrows[i].x1 = usersToColumns[user_name_1]
