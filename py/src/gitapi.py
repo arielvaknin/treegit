@@ -7,6 +7,11 @@ import os
 import time
 from git import Repo, Commit
 import difflib
+import subprocess
+import tempfile
+
+BC4_PATH = r"F:\AmatSW\shared\utils\BeyondCompare4\BCompare.exe"
+
 class GitApi:
 
     def __init__(self, file_path):
@@ -53,6 +58,7 @@ class GitApi:
         self._fill_map(history_base)
         for commit in history_base:
             self._find_parents(commit, self.file_path)
+        # self._print_diff_bc(history_base[0].hexsha, history_base[1].hexsha)
         return self.edges, self.nodes
 
     def _find_parents(self, child: Commit, file_path):
@@ -83,8 +89,12 @@ class GitApi:
         result['id'] = id
         return result
 
-    @staticmethod
-    def _print_diff(commit_a: Commit, commit_b: Commit):
+    def _hash_to_commit(self, hash_key: str):
+        return self._repo.commit(hash_key)
+
+    def _print_diff(self, hash_key_a, hash_key_b):
+        commit_a = self._hash_to_commit(hash_key_a)
+        commit_b = self._hash_to_commit(hash_key_b)
         diff = commit_a.diff(commit_b)[0]
         blob_a = diff.a_blob.data_stream.read().decode()
         blob_a = blob_a.splitlines()
@@ -101,6 +111,21 @@ class GitApi:
         for text in difflib.unified_diff(blob_a.split("\n"), blob_b.split("\n")):
             if text[:3] not in ('+++', '---', '@@ '):
                 print(text)
+
+    def _print_diff_bc(self, hash_key_a, hash_key_b):
+        commit_a = self._hash_to_commit(hash_key_a)
+        commit_b = self._hash_to_commit(hash_key_b)
+        diff = commit_a.diff(commit_b)[0]
+        blob_a = diff.a_blob.data_stream.read().decode()
+        blob_b = diff.b_blob.data_stream.read().decode()
+
+        temp_file_a_blob = os.path.join(tempfile.gettempdir(), 'commit_a.txt')
+        with open(temp_file_a_blob, 'w') as f:
+            print(blob_a, file=f)
+        temp_file_b_blob = os.path.join(tempfile.gettempdir(), 'commit_b.txt')
+        with open(temp_file_b_blob, 'w') as f:
+            print(blob_b, file=f)
+        subprocess.call([BC4_PATH, temp_file_a_blob, temp_file_b_blob])
 
 
 if __name__ == '__main__':
