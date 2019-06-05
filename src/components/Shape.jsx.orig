@@ -1,34 +1,26 @@
 import * as React from 'react';
 import Konva from 'konva';
 import { Arrow, Line, Stage, Layer, Circle, Text } from 'react-konva';
+import axios from 'axios';
+
 
 // constants
 // =========
 const radius = 20;
+const API = '127.0.0.1:5000/';
 
 // input from json
 // ===============
-// const dataIn = {
-//   all_user_names: ['Ariel Vaknin', 'Michael Farjon'],
-//   nodes: [
-//     { id: 1, user_name: 'Ariel Vaknin', category: 'message 1' },
-//     { id: 2, user_name: 'Ariel Vaknin', category: 'message 2' },
-//     { id: 3, user_name: 'Michael Farjon', category: 'message 3' },
-//     { id: 4, user_name: 'Ariel Vaknin', category: 'message 4' }
-//   ],
-//   edges: [[1,2], [2,3], [3,4], [2,4]], 
-// };
-
-const dataIn = {"nodes": [{"id": 1, "user_name": "michael-amat", "category": "5/6/2019"},
-                          {"id": 2, "user_name": "Michael Farjon", "category": "5/6/2019"},
-                          {"id": 3, "user_name": "ra-do", "category": "5/6/2019"},
-                          {"id": 4, "user_name": "michael-amat", "category": "5/6/2019"},
-                          {"id": 5, "user_name": "ra-do", "category": "5/6/2019"},
-                          {"id": 6, "user_name": "michael-amat", "category": "5/6/2019"},
-                          {"id": 7, "user_name": "michael-amat", "category": "5/6/2019"},
-                          {"id": 8, "user_name": "michael-amat", "category": "6/6/2019"}],
-                "edges": [[1, 2], [2, 3], [2, 4], [3, 5], [4, 5], [5, 6], [6, 7], [7, 8]],
-                "all_user_names": ["michael-amat", "Michael Farjon", "ra-do"]};
+const dataIn = {
+  all_user_names: ['Ariel Vaknin', 'Michael Farjon'],
+  nodes: [
+    { id: 1, user_name: 'Ariel Vaknin', category: 'message 1' },
+    { id: 2, user_name: 'Ariel Vaknin', category: 'message 2' },
+    { id: 3, user_name: 'Michael Farjon', category: 'message 3' },
+    { id: 4, user_name: 'Ariel Vaknin', category: 'message 4' }
+  ],
+  edges: [[1,2], [2,3], [3,4], [2,4]], 
+};
 
 // parse data
 // ==========
@@ -61,8 +53,13 @@ const rows = parseRowsLocation(dataIn);
 const cols = parseColLocation(dataIn);
 
 let usersToColumns = {};
+<<<<<<< HEAD:src/components/Shape.jsx
+dataIn.allUserNames = dataIn.allUserNames.concat(['Messages'])
+dataIn.allUserNames.forEach((key, i) => usersToColumns[key] = cols[i]);
+=======
 dataIn.all_user_names = dataIn.all_user_names.concat(['Messages'])
 dataIn.all_user_names.forEach((key, i) => usersToColumns[key] = cols[i]);
+>>>>>>> 4a7007da48f51ec659beaac50ab7ffaa7cac34b6:fe/src/components/Shape.jsx
 
 let arrows = [];
 let i = 0
@@ -79,11 +76,24 @@ for (i ; i < dataIn.edges.length; i++) {
 }
 
 export class Shape extends React.Component {
+  componentDidMount() {
+    console.log('component did mount')
+    const url = 'http://127.0.0.1:5000/file_info';
+    axios.get(url)
+      .then(result => console.log(result))
+      // .then(response => response.json())
+      // .then(data => console.log(data));
+  }
+
   render() {
-      console.log(window.innerWidth);
-      console.log(window.innerHeight);
+    console.log('fetching url...');
+    // const url = 'http://127.0.0.1:5000/file_info';
+    // const url = 'http://127.0.0.1:5000/file_info?filePath=F:/Users/elahav109995/Desktop/programming/hackathon/TreeGitTest/f1.txt';
+    // fetch(url)
+    //   .then(response => console.log(response))
+    
     return (
-      <Stage width={ 3000 } height={ 3000 }>
+      <Stage width={ window.innerWidth } height={ window.innerHeight }>
         <Layer>
           {dataIn.nodes.map((item, ind) => (
               <Circle
@@ -92,7 +102,7 @@ export class Shape extends React.Component {
                 y={rows[ind]}
                 numPoints={5}
                 Radius={radius}
-                fill="blue"
+                fill="#89b717"
                 opacity={0.2}
                 shadowColor="black"
                 shadowBlur={10}
