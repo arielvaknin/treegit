@@ -66,11 +66,28 @@ def file_info():
     # Manipulate nodes to get only relevant fields by Category
     new_nodes = manipulate_nodes(nodes, category)
 
-    nodes_json = json.dumps(new_nodes)
-    edges_json = json.dumps(edges)
-    all_user_names_json = json.dumps(list(set([i['user_name'] for i in nodes])))
+    all_user_names = list([i['user_name'] for i in nodes])
 
-    return nodes_json, edges_json, all_user_names_json
+    return json.dumps({'nodes': new_nodes, 'edges': edges, 'all_user_names': all_user_names})
+
+
+@app.route('/commitsCompare')  # Query String to run File Compare
+def commits_compare():
+    if 'nodes' in session and 'file_path' in session:
+        id1 = request.args.get('id1', None)
+        id2 = request.args.get('id2', None)
+        if id1 is None or id2 is None:
+            return 'Must supply id for 2 files to compare!'
+
+        nodes = session['nodes']
+
+        id1_hash = [i['hash_key'] for i in nodes if i['id'] == int(id1)]
+        id2_hash = [i['hash_key'] for i in nodes if i['id'] == int(id2)]
+
+        git_api = GitApi(session['file_path'])
+        git_api.print_diff_bc(id1_hash[0], id2_hash[0])
+    else:
+        return 'Commit info does not exists because file info does not exits'
 
 
 if __name__ == "__main__":
