@@ -49,11 +49,11 @@ class GitApi:
                 k += 1
 
     def get_file_history(self):
-        history_base = list(self._repo.iter_commits(paths=file_path))
+        history_base = list(self._repo.iter_commits(paths=self.file_path))
 
         self._fill_map(history_base)
         for commit in history_base:
-            self._find_parents(commit, file_path)
+            self._find_parents(commit, self.file_path)
 
         return self.edges, self.nodes
 
@@ -91,9 +91,9 @@ class GitApi:
 
 if __name__ == '__main__':
 
-    working_directory = r"F:\Users\mfarjon154598\PycharmProjects\TreeGitTest"
-    file_path = r"F:\Users\mfarjon154598\PycharmProjects\TreeGitTest\f1.txt"
-    git_api = GitApi(file_path)
+    working_directory1 = r"F:\Users\mfarjon154598\PycharmProjects\TreeGitTest"
+    file_path1 = r"F:\Users\mfarjon154598\PycharmProjects\TreeGitTest\f1.txt"
+    git_api = GitApi(file_path1)
     # git_api.get_file_history(file_path)git_api.create_history_graph(file_path)
     git_api.get_file_history()
     print(git_api.nodes)
