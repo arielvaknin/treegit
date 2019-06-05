@@ -1,5 +1,5 @@
 from flask import Flask, request, session
-from gitapi import GitApi
+from py.src.gitapi import GitApi
 import json
 import os
 
@@ -33,12 +33,12 @@ def commit_info(inner_id):
 @app.route('/file_info')  # Query String to get fileInfo
 def file_info():
     file_path = request.args.get('filePath', None)
-    category = request.args.get('category',  'commit_message')
+    category = request.args.get('category',  'commit_date')
 
     if file_path is None:
         return 'filePath not supplied!'
 
-    if category not in ['hash_key', 'commit_date', 'commit_message']:
+    if category not in ['hash_key', 'commit_date', 'commit_msg']:
         return f'Error: Category "{category}" not supported!'
 
     # Strip file_path from PreFix till Qmatlab_util
