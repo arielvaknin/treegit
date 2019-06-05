@@ -21,12 +21,39 @@ const dataIn = {
 
 // parse data
 // ==========
-// [rows, cols] = parseData(dataIn);
-//   const firstRow = 100;
-//   const rows = []
+function parseRowsLocation(dataIn){
+  const rowSpacing = 100;
+  const rows1 = Array(dataIn.nodes.length);
+  let rows = []
 
-const rows = [100, 200, 300, 400];
-const cols = [500, 600, 700];
+  for (let i = 0; i< rows1.length; i++) {
+    rows[i] = (i+1)*rowSpacing;
+  }
+
+  // console.log(`rows: ${rows}`);
+  return rows
+}
+
+function parseColLocation(dataIn){
+  const colSpacing = 100;
+  const cols1 = Array(dataIn.allUserNames.length + 1);
+  let cols = []
+
+  for (let i = 0; i< cols1.length; i++) {
+    cols[i] = (i+5)*colSpacing;
+  }
+  // console.log(`cols: ${cols}`);
+  return cols;
+}
+  
+const rows = parseRowsLocation(dataIn);
+const cols = parseColLocation(dataIn);
+
+
+ 
+
+// const rows = [100, 200, 300, 400];
+// const cols = [500, 600, 700];
 // usersToColumns = getUsersToColumns(dataIn.allUserNames, cols);
 const usersToColumns = {
   'Ariel Vaknin': 500,
