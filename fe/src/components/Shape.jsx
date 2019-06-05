@@ -101,16 +101,6 @@ export class Shape extends React.Component {
           ))}
         </Layer>
         <Layer>
-          {dataIn.nodes.map((item, ind) => (
-              <Text 
-                text={`${item.message} ${item.date}`}
-                x={usersToColumns['Messages']}
-                y={rows[ind] - 10}
-                fontSize='20'
-              />
-          ))}
-        </Layer>
-        <Layer>
           {arrows.map( item => (
               <Arrow 
                 points={ [item.x1, item.y1 + radius, item.x2, item.y2 - radius] }
