@@ -13,16 +13,27 @@ const radius = 20;
 
 // input from json
 // ===============
-const dataIn = {
-  all_user_names: ['Ariel Vaknin', 'Michael Farjon'],
-  nodes: [
-    { id: 1, user_name: 'Ariel Vaknin', category: 'message 1' },
-    { id: 2, user_name: 'Ariel Vaknin', category: 'message 2' },
-    { id: 3, user_name: 'Michael Farjon', category: 'message 3' },
-    { id: 4, user_name: 'Ariel Vaknin', category: 'message 4' }
-  ],
-  edges: [[1,2], [2,3], [3,4], [2,4]], 
-};
+// const dataIn = {
+//   all_user_names: ['Ariel Vaknin', 'Michael Farjon'],
+//   nodes: [
+//     { id: 1, user_name: 'Ariel Vaknin', category: 'message 1' },
+//     { id: 2, user_name: 'Ariel Vaknin', category: 'message 2' },
+//     { id: 3, user_name: 'Michael Farjon', category: 'message 3' },
+//     { id: 4, user_name: 'Ariel Vaknin', category: 'message 4' }
+//   ],
+//   edges: [[1,2], [2,3], [3,4], [2,4]], 
+// };
+
+const dataIn = {"nodes": [{"id": 1, "user_name": "michael-amat", "category": "5/6/2019"},
+                          {"id": 2, "user_name": "Michael Farjon", "category": "5/6/2019"},
+                          {"id": 3, "user_name": "ra-do", "category": "5/6/2019"},
+                          {"id": 4, "user_name": "michael-amat", "category": "5/6/2019"},
+                          {"id": 5, "user_name": "ra-do", "category": "5/6/2019"},
+                          {"id": 6, "user_name": "michael-amat", "category": "5/6/2019"},
+                          {"id": 7, "user_name": "michael-amat", "category": "5/6/2019"},
+                          {"id": 8, "user_name": "michael-amat", "category": "6/6/2019"}],
+                "edges": [[1, 2], [2, 3], [2, 4], [3, 5], [4, 5], [5, 6], [6, 7], [7, 8]],
+                "all_user_names": ["michael-amat", "Michael Farjon", "ra-do"]};
 
 export interface ShapeState {};
 
@@ -53,7 +64,7 @@ export class Shape extends React.Component {
     const arrows = parseArrows(dataIn, usersToColumns, rows);
 
     return (
-      <Stage width={ window.innerWidth } height={ window.innerHeight }>
+      <Stage width={ 3000 } height={ 3000 }>
         <Layer>
           {dataIn.nodes.map((item, ind) => (
               <Circle
@@ -62,7 +73,7 @@ export class Shape extends React.Component {
                 y={rows[ind]}
                 numPoints={5}
                 Radius={radius}
-                fill="#89b717"
+                fill="blue"
                 opacity={0.2}
                 shadowColor="black"
                 shadowBlur={10}
