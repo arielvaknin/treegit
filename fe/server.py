@@ -20,7 +20,6 @@ def manipulate_nodes(nodes, category):
 @app.route('/')
 def index():
     return render_template('index.html')
-    # return redirect(url_for('../../../public/index.html'))
     # return 'TreeView: use the next notation in URL: \n /file_info/filePath?<full file name>'
 
 
@@ -69,8 +68,9 @@ def file_info():
 
     nodes_json = json.dumps(new_nodes)
     edges_json = json.dumps(edges)
+    all_user_names_json = json.dumps(list(set([i['user_name'] for i in nodes])))
 
-    return nodes_json, edges_json
+    return nodes_json, edges_json, all_user_names_json
 
 
 if __name__ == "__main__":
