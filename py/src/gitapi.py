@@ -6,14 +6,14 @@ and try to understand how to work with it.
 import os
 import time
 from git import Repo, Commit
-from py.src.commitnode import CommitList
+
 
 class GitApi:
 
     def __init__(self, repo_path):
         self._repo_path = repo_path
         self._repo = Repo(repo_path)
-        self.nodes = {}
+        self.nodes = list()
         self._map = {}
         self.edges = []
 
@@ -26,45 +26,55 @@ class GitApi:
         log = master.log()
         print(log)
 
-    def get_file_history(self, file_path):
-        history = list(self._repo.iter_commits(paths=file_path))
-        for commit in history:
-            print("\nAuthor: {} \n Commit date: {} \n Message: {} with sha: {} "
-                  .format(commit.author,
-                          time.strftime("%a, %d %b %Y %H:%M", time.localtime(commit.committed_date)),
-                          commit.message,
-                          commit.hexsha))
-
-    def create_history_graph(self, file_path):
-        history = list(self._repo.iter_commits(paths=file_path))
-
-        # wrapping commit in Commit node object
+    def _fill_map(self, history):
         k = 1
         for commit in history:
             if commit.hexsha not in self._map:
                 self._map[commit.hexsha] = k
-                self.nodes[k] = self._commit_2_dict(commit)
+                self.nodes.append(self._commit_2_dict(commit, k))
                 k += 1
-        for commit in history:
-            from_id = self._map[commit.hexsha]
-            for parent in commit.parents:
-                if parent.hexsha in self._map:
-                    to_id = self._map[parent.hexsha]
-                    self.edges.append((from_id, to_id))
 
-        print(self._map)
+    def get_file_history(self, file_path):
+        history_base = list(self._repo.iter_commits(paths=file_path))
+
+        self._fill_map(history_base)
+        for commit in history_base:
+            self._find_parents(commit, file_path)
+
         print(self.edges)
 
+    def _find_parents(self, child: Commit, file_path):
+        history = list(child.iter_parents(paths=file_path))
+        from_id = self._map[child.hexsha]
+
+        if len(history) >= 1:
+            parent_1 = history[0]
+            to_id = self._map[parent_1.hexsha]
+            self.edges.append( (from_id, to_id))
+
+            if len(history) >= 2:
+                parent_2 = history[1]
+
+                hist_p_1 = list(parent_1.iter_parents( paths=file_path))
+                if parent_2 not in hist_p_1:
+                    to_id = self._map[parent_2.hexsha]
+                    self.edges.append((from_id, to_id))
 
 
-    def _commit_2_dict(self, commit: Commit):
+
+
+
+
+
+    def _commit_2_dict(self, commit: Commit, id):
         result = {}
-        result.time = time.localtime(commit.committed_date)
-        result.parents = commit.parents
-        result.message = commit.message
-        result.author = commit.author
-        result.index = 0
-        result.id = id
+        result['hash_key'] = commit.hexsha
+        t = time.localtime(commit.committed_date)
+        result['commit_date'] = "{}/{}/{}".format(t.tm_mday, t.tm_mon, t.tm_year)
+        result['parents'] = [x.hexsha for x in commit.parents]
+        result['commit_msg'] = commit.message
+        result['user_name'] = str(commit.author)
+        result['id'] = id
         return result
 
 
@@ -73,11 +83,10 @@ class GitApi:
 
 if __name__ == '__main__':
 
-    # loading git repo
-    # working_directory = os.getcwd()
-    # understand how to get the repo path automatically
     working_directory = "F:/Users/avaknin119870/Documents/Projects/treegit"
     working_directory = "F:/views/g/mono_repo_1"
     file_path = "F:/views/g/mono_repo_1/Qmatlab_util/source/tool/Aviv/MDM_Calibration_Toolbox/Modules/DM_Open/DM_Open.m"
-    repo = Repo(working_directory)
-    print(repo)
+    git_api = GitApi(working_directory)
+    # git_api.get_file_history(file_path)git_api.create_history_graph(file_path)
+    git_api.get_file_history(file_path)
+    print(git_api.nodes)
