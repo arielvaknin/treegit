@@ -7,6 +7,11 @@ import os
 import time
 from git import Repo, Commit
 import difflib
+import subprocess
+import tempfile
+
+BC4_PATH = r"F:\AmatSW\shared\utils\BeyondCompare4\BCompare.exe"
+
 class GitApi:
 
     def __init__(self, file_path):
@@ -101,6 +106,20 @@ class GitApi:
         for text in difflib.unified_diff(blob_a.split("\n"), blob_b.split("\n")):
             if text[:3] not in ('+++', '---', '@@ '):
                 print(text)
+
+    @staticmethod
+    def _print_diff_bc(commit_a: Commit, commit_b: Commit):
+        diff = commit_a.diff(commit_b)[0]
+        blob_a = diff.a_blob.data_stream.read().decode()
+        blob_b = diff.b_blob.data_stream.read().decode()
+
+        temp_file_a_blob = os.path.join(tempfile.gettempdir(), 'commit_a.txt')
+        with open(temp_file_a_blob, 'w') as f:
+            print(blob_a, file=f)
+        temp_file_b_blob = os.path.join(tempfile.gettempdir(), 'commit_b.txt')
+        with open(temp_file_b_blob, 'w') as f:
+            print(blob_b, file=f)
+        subprocess.call([BC4_PATH, temp_file_a_blob, temp_file_b_blob])
 
 
 if __name__ == '__main__':
