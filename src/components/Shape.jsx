@@ -3,11 +3,13 @@ import Konva from 'konva';
 import { Arrow, Line, Stage, Layer, Circle, Text } from 'react-konva';
 import axios from 'axios';
 
+import { parseRowsLocation, parseColLocation, parseUsersToColumns, parseArrows } from '../utils/utils';
+
 
 // constants
 // =========
 const radius = 20;
-const API = '127.0.0.1:5000/';
+// const API = '127.0.0.1:5000/';
 
 // input from json
 // ===============
@@ -22,71 +24,34 @@ const dataIn = {
   edges: [[1,2], [2,3], [3,4], [2,4]], 
 };
 
-// parse data
-// ==========
-function parseRowsLocation(dataIn){
-  const rowSpacing = 100;
-  const rows1 = Array(dataIn.nodes.length);
-  let rows = []
-
-  for (let i = 0; i< rows1.length; i++) {
-    rows[i] = (i+1)*rowSpacing;
-  }
-
-  // console.log(`rows: ${rows}`);
-  return rows
-}
-
-function parseColLocation(dataIn){
-  const colSpacing = 100;
-  const cols1 = Array(dataIn.all_user_names.length + 1);
-  let cols = []
-
-  for (let i = 0; i< cols1.length; i++) {
-    cols[i] = (i+5)*colSpacing;
-  }
-  // console.log(`cols: ${cols}`);
-  return cols;
-}
-  
-const rows = parseRowsLocation(dataIn);
-const cols = parseColLocation(dataIn);
-
-let usersToColumns = {};
-dataIn.all_user_names = dataIn.all_user_names.concat(['Messages'])
-dataIn.all_user_names.forEach((key, i) => usersToColumns[key] = cols[i]);
-
-let arrows = [];
-let i = 0
-for (i ; i < dataIn.edges.length; i++) {
-  
-  const user_name_1 = dataIn.nodes.find( node => node.id === dataIn.edges[i][0] ).user_name;
-  const user_name_2 = dataIn.nodes.find( node => node.id === dataIn.edges[i][1] ).user_name;
-
-  arrows[i] = {};
-  arrows[i].x1 = usersToColumns[user_name_1]
-  arrows[i].y1 = rows[dataIn.edges[i][0]-1]
-  arrows[i].x2 = usersToColumns[user_name_2]
-  arrows[i].y2 = rows[dataIn.edges[i][1]-1]
-}
+export interface ShapeState {};
 
 export class Shape extends React.Component {
+  constructor(props, state) {
+    super(props, state);
+    this.state = {
+      dataIn: dataIn
+    }
+  }
   componentDidMount() {
     console.log('component did mount')
-    const url = 'http://127.0.0.1:5000/file_info';
+    const url = '/file_info?filePath=F:/Users/elahav109995/Desktop/programming/hackathon/TreeGitTest/f1.txt';
+    console.log(`url is: ${url}`)
     axios.get(url)
-      .then(result => console.log(result))
-      // .then(response => response.json())
-      // .then(data => console.log(data));
+      .then(result => this.setState({
+        dataIn: result.data
+      }));
   }
 
   render() {
     console.log('fetching url...');
-    // const url = 'http://127.0.0.1:5000/file_info';
-    // const url = 'http://127.0.0.1:5000/file_info?filePath=F:/Users/elahav109995/Desktop/programming/hackathon/TreeGitTest/f1.txt';
-    // fetch(url)
-    //   .then(response => console.log(response))
-    
+   
+    const dataIn = this.state.dataIn;
+    const rows = parseRowsLocation(dataIn);
+    const cols = parseColLocation(dataIn);
+    const usersToColumns = parseUsersToColumns(dataIn, cols);
+    const arrows = parseArrows(dataIn, usersToColumns, rows);
+
     return (
       <Stage width={ window.innerWidth } height={ window.innerHeight }>
         <Layer>
