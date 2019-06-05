@@ -82,7 +82,7 @@ class GitApi:
         result = {}
         result['hash_key'] = commit.hexsha
         t = time.localtime(commit.committed_date)
-        result['commit_date'] = "{}/{}/{}".format(t.tm_mday, t.tm_mon, t.tm_year)
+        result['commit_date'] = "{}/{}/{} {}:{}".format(t.tm_mday, t.tm_mon, t.tm_year, t.tm_hour, t.tm_min)
         result['parents'] = [x.hexsha for x in commit.parents]
         result['commit_msg'] = commit.message
         result['user_name'] = str(commit.author)
