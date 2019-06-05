@@ -1,10 +1,13 @@
 import * as React from 'react';
 import Konva from 'konva';
 import { Arrow, Line, Stage, Layer, Circle, Text } from 'react-konva';
+import axios from 'axios';
+
 
 // constants
 // =========
 const radius = 20;
+const API = '127.0.0.1:5000/';
 
 // input from json
 // ===============
@@ -49,7 +52,7 @@ function parseColLocation(dataIn){
 const rows = parseRowsLocation(dataIn);
 const cols = parseColLocation(dataIn);
 
-var usersToColumns = {};
+let usersToColumns = {};
 dataIn.allUserNames = dataIn.allUserNames.concat(['Messages'])
 dataIn.allUserNames.forEach((key, i) => usersToColumns[key] = cols[i]);
 
@@ -61,9 +64,22 @@ const arrows = [
 ]
 
 export class Shape extends React.Component {
+  componentDidMount() {
+    console.log('component did mount')
+    const url = 'http://127.0.0.1:5000/file_info';
+    axios.get(url)
+      .then(result => console.log(result))
+      // .then(response => response.json())
+      // .then(data => console.log(data));
+  }
+
   render() {
-      console.log(window.innerWidth);
-      console.log(window.innerHeight);
+    console.log('fetching url...');
+    // const url = 'http://127.0.0.1:5000/file_info';
+    // const url = 'http://127.0.0.1:5000/file_info?filePath=F:/Users/elahav109995/Desktop/programming/hackathon/TreeGitTest/f1.txt';
+    // fetch(url)
+    //   .then(response => console.log(response))
+    
     return (
       <Stage width={ window.innerWidth } height={ window.innerHeight }>
         <Layer>
