@@ -1,10 +1,13 @@
 import * as React from 'react';
 import Konva from 'konva';
 import { Arrow, Line, Stage, Layer, Circle, Text } from 'react-konva';
+import axios from 'axios';
+
 
 // constants
 // =========
 const radius = 20;
+const API = '127.0.0.1:5000/';
 
 // input from json
 // ===============
@@ -50,8 +53,13 @@ const rows = parseRowsLocation(dataIn);
 const cols = parseColLocation(dataIn);
 
 let usersToColumns = {};
+<<<<<<< HEAD:src/components/Shape.jsx
+dataIn.allUserNames = dataIn.allUserNames.concat(['Messages'])
+dataIn.allUserNames.forEach((key, i) => usersToColumns[key] = cols[i]);
+=======
 dataIn.all_user_names = dataIn.all_user_names.concat(['Messages'])
 dataIn.all_user_names.forEach((key, i) => usersToColumns[key] = cols[i]);
+>>>>>>> 4a7007da48f51ec659beaac50ab7ffaa7cac34b6:fe/src/components/Shape.jsx
 
 let arrows = [];
 let i = 0
@@ -68,9 +76,22 @@ for (i ; i < dataIn.edges.length; i++) {
 }
 
 export class Shape extends React.Component {
+  componentDidMount() {
+    console.log('component did mount')
+    const url = 'http://127.0.0.1:5000/file_info';
+    axios.get(url)
+      .then(result => console.log(result))
+      // .then(response => response.json())
+      // .then(data => console.log(data));
+  }
+
   render() {
-      console.log(window.innerWidth);
-      console.log(window.innerHeight);
+    console.log('fetching url...');
+    // const url = 'http://127.0.0.1:5000/file_info';
+    // const url = 'http://127.0.0.1:5000/file_info?filePath=F:/Users/elahav109995/Desktop/programming/hackathon/TreeGitTest/f1.txt';
+    // fetch(url)
+    //   .then(response => console.log(response))
+    
     return (
       <Stage width={ window.innerWidth } height={ window.innerHeight }>
         <Layer>
