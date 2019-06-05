@@ -53,8 +53,13 @@ const rows = parseRowsLocation(dataIn);
 const cols = parseColLocation(dataIn);
 
 let usersToColumns = {};
+<<<<<<< HEAD:src/components/Shape.jsx
+dataIn.allUserNames = dataIn.allUserNames.concat(['Messages'])
+dataIn.allUserNames.forEach((key, i) => usersToColumns[key] = cols[i]);
+=======
 dataIn.all_user_names = dataIn.all_user_names.concat(['Messages'])
 dataIn.all_user_names.forEach((key, i) => usersToColumns[key] = cols[i]);
+>>>>>>> 4a7007da48f51ec659beaac50ab7ffaa7cac34b6:fe/src/components/Shape.jsx
 
 let arrows = [];
 let i = 0
