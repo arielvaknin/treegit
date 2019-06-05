@@ -55,7 +55,7 @@ class GitApi:
         for commit in history_base:
             self._find_parents(commit, file_path)
 
-        return self.edges self.nodes
+        return self.edges, self.nodes
 
     def _find_parents(self, child: Commit, file_path):
         history = list(child.iter_parents(paths=file_path))
