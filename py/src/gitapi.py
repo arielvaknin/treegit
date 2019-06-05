@@ -10,21 +10,35 @@ from git import Repo, Commit
 
 class GitApi:
 
-    def __init__(self, repo_path):
-        self._repo_path = repo_path
-        self._repo = Repo(repo_path)
+    def __init__(self, file_path):
+        self.file_path = file_path
+        self._repo_path = self._find_repo_path(file_path)
+        self._repo = Repo(self._repo_path)
         self.nodes = list()
         self._map = {}
         self.edges = []
 
-    def is_bare(self) ->bool:
-        return self._repo.bare
+    # def is_bare(self) ->bool:
+        # return self._repo.bare
 
-    def get_history(self):
-        heads = self._repo.heads
-        master = heads.master
-        log = master.log()
-        print(log)
+    # def get_history(self):
+    #     heads = self._repo.heads
+    #     master = heads.master
+    #     log = master.log()
+    #     print(log)
+
+    @staticmethod
+    def _find_repo_path(file_path):
+        current_dir = os.path.split(file_path)[0]
+        if os.path.isdir(os.path.join(current_dir, '.git')):
+            return current_dir
+        split_dir = os.path.split(current_dir)[0]
+        while not split_dir == current_dir:
+            if os.path.isdir('.git'):
+                return current_dir
+            current_dir = split_dir
+            split_dir = os.path.split(current_dir)[0]
+        raise ValueError('Not a valid git repo!')
 
     def _fill_map(self, history):
         k = 1
@@ -34,7 +48,7 @@ class GitApi:
                 self.nodes.append(self._commit_2_dict(commit, k))
                 k += 1
 
-    def get_file_history(self, file_path):
+    def get_file_history(self):
         history_base = list(self._repo.iter_commits(paths=file_path))
 
         self._fill_map(history_base)
@@ -60,12 +74,6 @@ class GitApi:
                     to_id = self._map[parent_2.hexsha]
                     self.edges.append((from_id, to_id))
 
-
-
-
-
-
-
     def _commit_2_dict(self, commit: Commit, id):
         result = {}
         result['hash_key'] = commit.hexsha
@@ -83,10 +91,9 @@ class GitApi:
 
 if __name__ == '__main__':
 
-    working_directory = "F:/Users/avaknin119870/Documents/Projects/treegit"
-    working_directory = "F:/views/g/mono_repo_1"
-    file_path = "F:/views/g/mono_repo_1/Qmatlab_util/source/tool/Aviv/MDM_Calibration_Toolbox/Modules/DM_Open/DM_Open.m"
-    git_api = GitApi(working_directory)
+    working_directory = r"F:\Users\mfarjon154598\PycharmProjects\TreeGitTest"
+    file_path = r"F:\Users\mfarjon154598\PycharmProjects\TreeGitTest\f1.txt"
+    git_api = GitApi(file_path)
     # git_api.get_file_history(file_path)git_api.create_history_graph(file_path)
-    git_api.get_file_history(file_path)
+    git_api.get_file_history()
     print(git_api.nodes)
