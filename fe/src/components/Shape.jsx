@@ -9,12 +9,12 @@ const radius = 20;
 // input from json
 // ===============
 const dataIn = {
-  allUserNames: ['Ariel Vaknin', 'Michael Farjon'],
+  all_user_names: ['Ariel Vaknin', 'Michael Farjon'],
   nodes: [
-    { id: 1, user_name: 'Ariel Vaknin', date: '19/3/2018', message: 'message 1' },
-    { id: 2, user_name: 'Ariel Vaknin', date: '11/1/2019', message: 'message 2' },
-    { id: 3, user_name: 'Michael Farjon', date: '8/2/2019', message: 'message 3' },
-    { id: 4, user_name: 'Ariel Vaknin', date: '1/4/2019', message: 'message 4' }
+    { id: 1, user_name: 'Ariel Vaknin', category: 'message 1' },
+    { id: 2, user_name: 'Ariel Vaknin', category: 'message 2' },
+    { id: 3, user_name: 'Michael Farjon', category: 'message 3' },
+    { id: 4, user_name: 'Ariel Vaknin', category: 'message 4' }
   ],
   edges: [[1,2], [2,3], [3,4], [2,4]], 
 };
@@ -36,7 +36,7 @@ function parseRowsLocation(dataIn){
 
 function parseColLocation(dataIn){
   const colSpacing = 100;
-  const cols1 = Array(dataIn.allUserNames.length + 1);
+  const cols1 = Array(dataIn.all_user_names.length + 1);
   let cols = []
 
   for (let i = 0; i< cols1.length; i++) {
@@ -49,16 +49,23 @@ function parseColLocation(dataIn){
 const rows = parseRowsLocation(dataIn);
 const cols = parseColLocation(dataIn);
 
-var usersToColumns = {};
-dataIn.allUserNames = dataIn.allUserNames.concat(['Messages'])
-dataIn.allUserNames.forEach((key, i) => usersToColumns[key] = cols[i]);
+let usersToColumns = {};
+dataIn.all_user_names = dataIn.all_user_names.concat(['Messages'])
+dataIn.all_user_names.forEach((key, i) => usersToColumns[key] = cols[i]);
 
-const arrows = [
-  { x1: 500 , y1: 100, x2: 500, y2: 200 },
-  { x1: 500 , y1: 200, x2: 600, y2: 300 },
-  { x1: 600 , y1: 300, x2: 500, y2: 400 },
-  { x1: 500 , y1: 200, x2: 500, y2: 400 },
-]
+let arrows = [];
+let i = 0
+for (i ; i < dataIn.edges.length; i++) {
+  
+  const user_name_1 = dataIn.nodes.find( node => node.id === dataIn.edges[i][0] ).user_name;
+  const user_name_2 = dataIn.nodes.find( node => node.id === dataIn.edges[i][1] ).user_name;
+
+  arrows[i] = {};
+  arrows[i].x1 = usersToColumns[user_name_1]
+  arrows[i].y1 = rows[dataIn.edges[i][0]-1]
+  arrows[i].x2 = usersToColumns[user_name_2]
+  arrows[i].y2 = rows[dataIn.edges[i][1]-1]
+}
 
 export class Shape extends React.Component {
   render() {
@@ -109,7 +116,7 @@ export class Shape extends React.Component {
         <Layer>
           {dataIn.nodes.map((item, ind) => (
               <Text 
-                text={`${item.message} ${item.date}`}
+                text={`${item.category}`}
                 x={usersToColumns['Messages']}
                 y={rows[ind] - 10}
                 fontSize='20'

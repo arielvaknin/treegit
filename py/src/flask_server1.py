@@ -1,12 +1,9 @@
-from flask import Flask, request, session, redirect, url_for, render_template
-
+from flask import Flask, request, session
 from py.src.gitapi import GitApi
 import json
 import os
 
-app = Flask(__name__, static_folder="build/static", template_folder="build")
-
-# app = Flask(__name__, static_url_path='')
+app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
 
@@ -19,9 +16,7 @@ def manipulate_nodes(nodes, category):
 
 @app.route('/')
 def index():
-    return render_template('index.html')
-    # return redirect(url_for('../../../public/index.html'))
-    # return 'TreeView: use the next notation in URL: \n /file_info/filePath?<full file name>'
+    return 'TreeView: use the next notation in URL: \n /file_info/filePath?<full file name>'
 
 
 @app.route('/commit_info/<inner_id>', methods=['GET', 'SET'])
@@ -64,13 +59,16 @@ def file_info():
         nodes = session['nodes']
         edges = session['edges']
 
+    all_user_names = set([i['user_name'] for i in nodes])
+    all_user_names = json.dumps(list(all_user_names))
+
     # Manipulate nodes to get only relevant fields by Category
     new_nodes = manipulate_nodes(nodes, category)
 
     nodes_json = json.dumps(new_nodes)
     edges_json = json.dumps(edges)
 
-    return nodes_json, edges_json
+    return nodes_json, edges_json, all_user_names
 
 
 if __name__ == "__main__":
