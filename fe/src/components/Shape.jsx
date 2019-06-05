@@ -32,12 +32,19 @@ var usersToColumns = {};
 dataIn.allUserNames = dataIn.allUserNames.concat(['Messages'])
 dataIn.allUserNames.forEach((key, i) => usersToColumns[key] = cols[i]);
 
-const arrows = [
-  { x1: 500 , y1: 100, x2: 500, y2: 200 },
-  { x1: 500 , y1: 200, x2: 600, y2: 300 },
-  { x1: 600 , y1: 300, x2: 500, y2: 400 },
-  { x1: 500 , y1: 200, x2: 500, y2: 400 },
-]
+var arrows = [];
+var i = 0
+for (i ; i < dataIn.edges.length; i++) {
+  
+  var user_name_1 = dataIn.nodes.find( node => node.id === dataIn.edges[i][0] ).user_name;
+  var user_name_2 = dataIn.nodes.find( node => node.id === dataIn.edges[i][1] ).user_name;
+
+  arrows[i] = {};
+  arrows[i].x1 = usersToColumns[user_name_1]
+  arrows[i].y1 = rows[dataIn.edges[i][0]-1]
+  arrows[i].x2 = usersToColumns[user_name_2]
+  arrows[i].y2 = rows[dataIn.edges[i][1]-1]
+}
 
 export class Shape extends React.Component {
   render() {
