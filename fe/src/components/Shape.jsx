@@ -9,7 +9,7 @@ const radius = 20;
 // input from json
 // ===============
 const dataIn = {
-  allUserNames: ['Ariel Vaknin', 'Michael Farjon'],
+  all_user_names: ['Ariel Vaknin', 'Michael Farjon'],
   nodes: [
     { id: 1, user_name: 'Ariel Vaknin', category: 'message 1' },
     { id: 2, user_name: 'Ariel Vaknin', category: 'message 2' },
@@ -36,7 +36,7 @@ function parseRowsLocation(dataIn){
 
 function parseColLocation(dataIn){
   const colSpacing = 100;
-  const cols1 = Array(dataIn.allUserNames.length + 1);
+  const cols1 = Array(dataIn.all_user_names.length + 1);
   let cols = []
 
   for (let i = 0; i< cols1.length; i++) {
@@ -50,8 +50,8 @@ const rows = parseRowsLocation(dataIn);
 const cols = parseColLocation(dataIn);
 
 var usersToColumns = {};
-dataIn.allUserNames = dataIn.allUserNames.concat(['Messages'])
-dataIn.allUserNames.forEach((key, i) => usersToColumns[key] = cols[i]);
+dataIn.all_user_names = dataIn.all_user_names.concat(['Messages'])
+dataIn.all_user_names.forEach((key, i) => usersToColumns[key] = cols[i]);
 
 const arrows = [
   { x1: 500 , y1: 100, x2: 500, y2: 200 },
