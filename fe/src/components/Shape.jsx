@@ -11,10 +11,10 @@ const radius = 20;
 const dataIn = {
   allUserNames: ['Ariel Vaknin', 'Michael Farjon'],
   nodes: [
-    { id: 1, user_name: 'Ariel Vaknin', date: '19/3/2018', message: 'message 1' },
-    { id: 2, user_name: 'Ariel Vaknin', date: '11/1/2019', message: 'message 2' },
-    { id: 3, user_name: 'Michael Farjon', date: '8/2/2019', message: 'message 3' },
-    { id: 4, user_name: 'Ariel Vaknin', date: '1/4/2019', message: 'message 4' }
+    { id: 1, user_name: 'Ariel Vaknin', category: 'message 1' },
+    { id: 2, user_name: 'Ariel Vaknin', category: 'message 2' },
+    { id: 3, user_name: 'Michael Farjon', category: 'message 3' },
+    { id: 4, user_name: 'Ariel Vaknin', category: 'message 4' }
   ],
   edges: [[1,2], [2,3], [3,4], [2,4]], 
 };
@@ -109,7 +109,7 @@ export class Shape extends React.Component {
         <Layer>
           {dataIn.nodes.map((item, ind) => (
               <Text 
-                text={`${item.message} ${item.date}`}
+                text={`${item.category}`}
                 x={usersToColumns['Messages']}
                 y={rows[ind] - 10}
                 fontSize='20'
