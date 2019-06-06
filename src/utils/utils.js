@@ -3,7 +3,7 @@ export function parseRowsLocation(dataIn){
 }
 
 export function parseColLocation(dataIn){
-    return rangeArray(100, 100, dataIn.all_user_names.length + 1)
+    return rangeArray(100, 110, dataIn.all_user_names.length + 1)
 }
 
 function rangeArray(start, spacing, size) {

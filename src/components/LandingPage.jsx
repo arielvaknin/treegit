@@ -5,6 +5,8 @@ import { CommitViewer } from './commitsViewer';
 import { Container, Row, Col, Button, InputGroup, FormControl } from 'react-bootstrap';
 import axios from 'axios';
 
+import './LandingPage.scss';
+
 const API = '/file_info?filePath=';
 const defaultDataIn = {
     "nodes": [],
@@ -25,11 +27,7 @@ export class LandingPage extends React.Component {
         this.handleCommitclick = this.handleCommitclick.bind(this);
     }
 
-    handleCommitclick(id, user_name, category) {
-        console.log('clicked on a commit')
-        console.log(`item id is: ${id}`)
-        console.log(`item user name is: ${user_name}`)
-        console.log(`item category is: ${category}`)
+    handleCommitclick(id, user_name, category, hash) {
         this.setState({ commitData: { id: id, user_name: user_name, category: category } });
       }
 
@@ -58,11 +56,11 @@ export class LandingPage extends React.Component {
                     />
                 </InputGroup>
                 <Button variant="primary" onClick={this.handleAnalyze}>Analyze</Button>
-                <Row style={{paddingTop: '30px'}} className="main-row">
-                    <Col>
+                <Row style={{paddingTop: '50px'}} className="main-row">
+                    <Col sm={8}>
                         <CommitsParser dataIn={this.state.dataIn} handleCommitclick={this.handleCommitclick}/>
                     </Col>
-                    <Col>
+                    <Col sm={4}>
                         <CommitViewer commitData={ this.state.commitData }/>
                     </Col>
                 </Row>
