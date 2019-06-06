@@ -3,7 +3,7 @@ export function parseRowsLocation(dataIn){
 }
 
 export function parseColLocation(dataIn){
-    return rangeArray(100, 100, dataIn.all_user_names.length + 1)
+    return rangeArray(100, 200, dataIn.all_user_names.length + 1)
 }
 
 function rangeArray(start, spacing, size) {
@@ -12,6 +12,7 @@ function rangeArray(start, spacing, size) {
     for (let i = 0; i < size; i++) {
       arr[i] = (i+1) * spacing;
     }
+    console.log(`arr: ${arr}`)
     return arr;
 
 }
