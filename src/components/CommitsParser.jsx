@@ -13,7 +13,7 @@ export class CommitsParser extends React.Component {
     const arrows = parseArrows(dataIn, usersToColumns, rows);
 
     return (
-      <Stage width={ 3000 } height={ 3000 }>
+      <Stage width={ Math.max(...cols)+100 } height={ Math.max(...rows)+100 }>
         <Layer>
           {/* commits */}
           {dataIn.nodes.map((item, ind) => (

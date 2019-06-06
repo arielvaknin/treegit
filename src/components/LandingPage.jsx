@@ -46,7 +46,7 @@ export class LandingPage extends React.Component {
                     />
                 </InputGroup>
                 <Button variant="primary" onClick={this.handleAnalyze}>Analyze</Button>
-                <Row>
+                <Row style={{paddingTop: '30px'}}>
                     <CommitsParser dataIn={this.state.dataIn}/>
                 </Row>
             </Container>
