@@ -66,7 +66,11 @@ def file_info():
     # Manipulate nodes to get only relevant fields by Category
     new_nodes = manipulate_nodes(nodes, category)
 
-    all_user_names = list([i['user_name'] for i in nodes])
+    all_user_names = list()
+
+    for node in nodes:
+        if node['user_name'] not in all_user_names:
+           all_user_names.append(node['user_name'])
 
     return json.dumps({'nodes': new_nodes, 'edges': edges, 'all_user_names': all_user_names})
 

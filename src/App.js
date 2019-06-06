@@ -1,11 +1,11 @@
 import React from 'react';
-import { Shape } from './components/Shape';
+import { LandingPage } from './components/LandingPage';
 import './App.css';
 
 function App() {
   return (
     <div className="App">
-      <Shape />
+      <LandingPage />
     </div>
   );
 }
