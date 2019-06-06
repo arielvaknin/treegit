@@ -19,17 +19,19 @@ export class CommitsParser extends React.Component {
           {/* commits */}
           {dataIn.nodes.map((item, ind) => (
               <Circle
-                key={item.id}
-                x={usersToColumns[item.user_name]}
-                y={rows[ind]}
-                numPoints={5}
-                Radius={radius}
-                fill="blue"
-                opacity={0.2}
-                shadowColor="black"
-                shadowBlur={10}
-                shadowOpacity={0.6}
-                onClick={() => this.props.handleCommitclick(item.id, item.user_name, item.category)}
+              key={item.id}
+              x={usersToColumns[item.user_name]}
+              y={rows[ind]}
+              numPoints={5}
+              Radius={radius}
+              fill="#4be3ac"
+              stroke='black'
+              strokeWidth={2}
+              opacity={1}
+              shadowColor="black"
+              shadowBlur={5}
+              shadowOpacity={0.6} 
+              onClick={() => this.props.handleCommitclick(item.id, item.user_name, item.category)}
               />
           ))}
         </Layer>
@@ -74,11 +76,13 @@ export class CommitsParser extends React.Component {
           {/* Arrows */}
           {arrows.map( item => (
               <Arrow 
-                points={ [item.x1, item.y1 + radius, item.x2, item.y2 - radius] }
-                stroke='red'
-                tension={1}
-                pointerLength={10}
-                pointerWidth={12}
+              points={ [item.x1, item.y1 + radius, item.x2, item.y2 - radius] }
+              stroke='red'
+              strokeWidth={2}
+              tension={1}
+              pointerLength={5}
+              pointerWidth={5}
+              fill='red' 
             />
           ))}
         </Layer>

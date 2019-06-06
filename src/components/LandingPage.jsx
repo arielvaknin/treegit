@@ -4,8 +4,9 @@ import { CommitViewer } from './commitsViewer';
 
 import { Container, Row, Col, Button, InputGroup, FormControl } from 'react-bootstrap';
 import axios from 'axios';
-
+import treegit_image from './treegit_image.jpeg' 
 import './LandingPage.scss';
+document.body.style = 'background: #fcf9ec;';
 
 const API = '/file_info?filePath=';
 const defaultDataIn = {
@@ -48,6 +49,7 @@ export class LandingPage extends React.Component {
     render () {
         return (
             <Container>
+                <img style={{width: '100px', height: '100px'}} src={treegit_image} alt={"logo"}/>
                 <h2>Welcome to TreeGit!!</h2>
                 <InputGroup className="mb-3" onChange={this.handleChange}>
                     <FormControl
