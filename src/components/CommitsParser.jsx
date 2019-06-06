@@ -1,35 +1,53 @@
 import * as React from 'react';
-import { Arrow, Stage, Layer, Circle, Text } from 'react-konva';
+import { Arrow, Stage, Layer, Circle, Text, Image } from 'react-konva';
 import { parseRowsLocation, parseColLocation, parseUsersToColumns, parseArrows } from '../utils/utils';
+import Konva from "konva";
 
 const radius = 20;
 
 export class CommitsParser extends React.Component {
-  // constructor(props) {
-  //   super(props);
-  //   // this.state = {
-  //   //   commitData: {id: '', user_name: '', category: ''}
-  //   // }
-  //   // this.handleCommitclick = this.handleCommitclick.bind(this);
-  // }
-
-  // handleCommitclick(id, user_name, category) {
-  //   console.log('clicked on a commit')
-  //   console.log(`item id is: ${id}`)
-  //   console.log(`item user name is: ${user_name}`)
-  //   console.log(`item category is: ${category}`)
-  //   this.setState({ commitData: { id: id, user_name: user_name, category: category } });
-  // }
-
   render() {   
     const dataIn = this.props.dataIn;
     const rows = parseRowsLocation(dataIn);
     const cols = parseColLocation(dataIn);
     const usersToColumns = parseUsersToColumns(dataIn, cols);
     const arrows = parseArrows(dataIn, usersToColumns, rows);
+    
+    // const imageObj = new Image();
+    // imageObj.onload = function() {
+    //   var image = new Image({
+    //     x: 200,
+    //     y: 50,
+    //     image: imageObj,
+    //     width: 100,
+    //     height: 100
+    //   });
+    // };
+    // imageObj.src = '../images/head.png'
+    // const headImage = new window.Image();
+    // headImage.src = '../images/head.png';
+    // headImage.x = 100;
+    // headImage.y = 100;
+    // headImage.width = 100;
+    // headImage.height = 100;
 
     return (
-      <Stage width={ Math.max(...cols)+100 } height={ Math.max(...rows)+100 }>
+      <Stage width={ 3000 } height={ 3000 } fill='red'>
+        {/* <Layer>
+          <Image
+            image={this.state.headImage}/>
+        </Layer> */}
+        {/* <Layer>
+          <Image
+            src='../images/head.png'
+            width={100}
+            height={100}
+            x={100}
+            y={100}
+
+          />
+        </Layer> */}
+        
         <Layer>
           {/* commits */}
           {dataIn.nodes.map((item, ind) => (
@@ -39,12 +57,13 @@ export class CommitsParser extends React.Component {
                 y={rows[ind]}
                 numPoints={5}
                 Radius={radius}
-                fill="blue"
-                opacity={0.2}
+                fill="#4be3ac"
+                stroke='black'
+                strokeWidth={2}
+                opacity={1}
                 shadowColor="black"
-                shadowBlur={10}
+                shadowBlur={5}
                 shadowOpacity={0.6}
-                onClick={() => this.props.handleCommitclick(item.id, item.user_name, item.category)}
               />
           ))}
         </Layer>
@@ -59,6 +78,8 @@ export class CommitsParser extends React.Component {
               />
           ))}
         </Layer>
+       
+
         <Layer>
           {/* Titles */}
           {Object.keys(usersToColumns).map( (user, ind) => (
@@ -90,9 +111,11 @@ export class CommitsParser extends React.Component {
               <Arrow 
                 points={ [item.x1, item.y1 + radius, item.x2, item.y2 - radius] }
                 stroke='red'
+                strokeWidth={2}
                 tension={1}
-                pointerLength={10}
-                pointerWidth={12}
+                pointerLength={5}
+                pointerWidth={5}
+                fill='red'
             />
           ))}
         </Layer>

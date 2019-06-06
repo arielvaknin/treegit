@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { CommitsParser } from './CommitsParser';
-import { CommitViewer } from './commitsViewer';
-
-import { Container, Row, Col, Button, InputGroup, FormControl } from 'react-bootstrap';
+import { Container, Row, Button, InputGroup, FormControl } from 'react-bootstrap';
 import axios from 'axios';
 
 const API = '/file_info?filePath=';
@@ -17,21 +15,11 @@ export class LandingPage extends React.Component {
         super(props, state);
         this.state = {
             dataIn: defaultDataIn,
-            filename: '',
-            commitData: {id: '', user_name: '', category: ''}
+            filename: ''
         }
         this.handleAnalyze = this.handleAnalyze.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        this.handleCommitclick = this.handleCommitclick.bind(this);
     }
-
-    handleCommitclick(id, user_name, category) {
-        console.log('clicked on a commit')
-        console.log(`item id is: ${id}`)
-        console.log(`item user name is: ${user_name}`)
-        console.log(`item category is: ${category}`)
-        this.setState({ commitData: { id: id, user_name: user_name, category: category } });
-      }
 
     handleChange(event) {
         this.setState({ filename: event.target.value })
@@ -58,13 +46,8 @@ export class LandingPage extends React.Component {
                     />
                 </InputGroup>
                 <Button variant="primary" onClick={this.handleAnalyze}>Analyze</Button>
-                <Row style={{paddingTop: '30px'}} className="main-row">
-                    <Col>
-                        <CommitsParser dataIn={this.state.dataIn} handleCommitclick={this.handleCommitclick}/>
-                    </Col>
-                    <Col>
-                        <CommitViewer commitData={ this.state.commitData }/>
-                    </Col>
+                <Row>
+                    <CommitsParser dataIn={this.state.dataIn}/>
                 </Row>
             </Container>
         );
