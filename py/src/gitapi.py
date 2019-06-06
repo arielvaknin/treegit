@@ -38,7 +38,7 @@ class GitApi:
             return current_dir
         split_dir = os.path.split(current_dir)[0]
         while not split_dir == current_dir:
-            if os.path.isdir('.git'):
+            if os.path.isdir(os.path.join(current_dir, '.git')):
                 return current_dir
             current_dir = split_dir
             split_dir = os.path.split(current_dir)[0]
@@ -130,7 +130,7 @@ class GitApi:
 
 if __name__ == '__main__':
     working_directory1 = r"F:\Users\mfarjon154598\PycharmProjects\TreeGitTest"
-    file_path1 = r"F:\Users\mfarjon154598\PycharmProjects\TreeGitTest\f1.txt"
+    file_path1 = r"F:\Users\mfarjon154598\PycharmProjects\treegit\.idea\workspace.xml"
     git_api = GitApi(file_path1)
     # git_api.get_file_history(file_path)git_api.create_history_graph(file_path)
     git_api.get_file_history()
