@@ -51,7 +51,7 @@ export class LandingPage extends React.Component {
         return (
             <Container>
                 <h2>Welcome to TreeGit!!</h2>
-                <InputGroup className="mb-3" onChange={this.handleChange}>
+                <InputGroup className="mb-3" onChange={this.handleChange} >
                     <FormControl
                     aria-label="Default"
                     aria-describedby="inputGroup-sizing-default"
