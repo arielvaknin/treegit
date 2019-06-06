@@ -1,12 +1,11 @@
 import * as React from 'react';
-import { Arrow, Stage, Layer, Circle, Text, Image } from 'react-konva';
+import { Arrow, Stage, Layer, Circle, Text } from 'react-konva';
 import { parseRowsLocation, parseColLocation, parseUsersToColumns, parseArrows } from '../utils/utils';
-import Konva from "konva";
 
 const radius = 20;
 
 export class CommitsParser extends React.Component {
-
+  
   render() {   
     const dataIn = this.props.dataIn;
     const rows = parseRowsLocation(dataIn);
@@ -15,22 +14,7 @@ export class CommitsParser extends React.Component {
     const arrows = parseArrows(dataIn, usersToColumns, rows);
 
     return (
-      <Stage width={ 3000 } height={ 3000 } fill='red'>
-        {/* <Layer>
-          <Image
-            image={this.state.headImage}/>
-        </Layer> */}
-        {/* <Layer>
-          <Image
-            src='../images/head.png'
-            width={100}
-            height={100}
-            x={100}
-            y={100}
-
-          />
-        </Layer> */}
-        
+      <Stage width={ Math.max(...cols)+100 } height={ Math.max(...rows)+100 }>
         <Layer>
           {/* commits */}
           {dataIn.nodes.map((item, ind) => (
