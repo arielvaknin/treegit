@@ -5,6 +5,22 @@ import { parseRowsLocation, parseColLocation, parseUsersToColumns, parseArrows }
 const radius = 20;
 
 export class CommitsParser extends React.Component {
+  // constructor(props) {
+  //   super(props);
+  //   // this.state = {
+  //   //   commitData: {id: '', user_name: '', category: ''}
+  //   // }
+  //   // this.handleCommitclick = this.handleCommitclick.bind(this);
+  // }
+
+  // handleCommitclick(id, user_name, category) {
+  //   console.log('clicked on a commit')
+  //   console.log(`item id is: ${id}`)
+  //   console.log(`item user name is: ${user_name}`)
+  //   console.log(`item category is: ${category}`)
+  //   this.setState({ commitData: { id: id, user_name: user_name, category: category } });
+  // }
+
   render() {   
     const dataIn = this.props.dataIn;
     const rows = parseRowsLocation(dataIn);
@@ -28,6 +44,7 @@ export class CommitsParser extends React.Component {
                 shadowColor="black"
                 shadowBlur={10}
                 shadowOpacity={0.6}
+                onClick={() => this.props.handleCommitclick(item.id, item.user_name, item.category)}
               />
           ))}
         </Layer>

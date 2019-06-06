@@ -17,7 +17,7 @@ def manipulate_nodes(nodes, category):
     return new_nodes
 
 
-@app.route('/')
+@app.route('/', methods=['GET'])
 def index():
     return render_template('index.html')
     # return 'TreeView: use the next notation in URL: \n /file_info/filePath?<full file name>'
@@ -95,6 +95,6 @@ def commits_compare():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False)
 
 
