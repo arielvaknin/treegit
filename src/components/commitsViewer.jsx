@@ -9,14 +9,22 @@ export class CommitViewer extends React.Component {
       <Alert variant="success">
         <Alert.Heading>Details for Commit {commitData.id}</Alert.Heading>
         <p>
-          Commit user name is: {commitData.user_name}
+          Commit user name is: <u>{commitData.user_name}</u>
         </p>
         <p>
-          Commit message is: {commitData.category}
+          Commit date is: <u>{commitData.commit_date}</u>
+        </p>
+        <p>
+          Commit message is: <u>{commitData.commit_msg}</u>
         </p>
         <hr />
         <p className="mb-0">
-          Commit hash code is: 
+          Commit hash code is: <br /> {commitData.hash_key}
+        </p>
+        <br />
+        <p>
+          Commit parent/s is/are: <br />
+          { commitData.parents.map( item => item + "\n") }
         </p>
       </Alert>
       // <div style={{backgroundColor: '#220022'}}>

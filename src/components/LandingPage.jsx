@@ -9,10 +9,19 @@ import './LandingPage.scss';
 document.body.style = 'background: #fcf9ec;';
 
 const API = '/file_info?filePath=';
+const API_CommitInfo = '/commit_info/';
 const defaultDataIn = {
     "nodes": [],
     "edges": [],
     "all_user_names": []
+};
+const defaultCommitData = {
+    commit_date: "", 
+    commit_msg: "", 
+    hash_key: "", 
+    id: 0, 
+    parents: [], 
+    user_name: "",
 };
 
 export class LandingPage extends React.Component {
@@ -21,7 +30,7 @@ export class LandingPage extends React.Component {
         this.state = {
             dataIn: defaultDataIn,
             filename: '',
-            commitData: {id: '', user_name: '', category: ''}
+            commitData: defaultCommitData,
         }
         this.handleAnalyze = this.handleAnalyze.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -29,7 +38,11 @@ export class LandingPage extends React.Component {
     }
 
     handleCommitclick(id, user_name, category, hash) {
-        this.setState({ commitData: { id: id, user_name: user_name, category: category } });
+        const url = API_CommitInfo + id.toString();
+           
+        axios.get(url)
+            .then(result => this.setState({ commitData: result.data }))
+            .catch(error => this.setState({ commitData: defaultDataIn }));
       }
 
     handleChange(event) {
@@ -59,10 +72,10 @@ export class LandingPage extends React.Component {
                 </InputGroup>
                 <Button variant="primary" onClick={this.handleAnalyze}>Analyze</Button>
                 <Row style={{paddingTop: '50px'}} className="main-row">
-                    <Col sm={8}>
+                    <Col sm={7}>
                         <CommitsParser dataIn={this.state.dataIn} handleCommitclick={this.handleCommitclick}/>
                     </Col>
-                    <Col sm={4}>
+                    <Col sm={5}>
                         <CommitViewer commitData={ this.state.commitData }/>
                     </Col>
                 </Row>
