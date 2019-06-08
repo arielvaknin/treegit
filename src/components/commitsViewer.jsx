@@ -4,9 +4,8 @@ import { Alert } from 'react-bootstrap';
 export class CommitViewer extends React.Component {
   render() {   
     const commitData = this.props.commitData;
-
     return (
-      <Alert variant="success">
+      <Alert variant="success" style={{marginTop: '10px'}}>
         <Alert.Heading>Details for Commit {commitData.id}</Alert.Heading>
         <p>
           Commit user name is: <u>{commitData.user_name}</u>
@@ -27,17 +26,6 @@ export class CommitViewer extends React.Component {
           { commitData.parents.map( item => item + "\n") }
         </p>
       </Alert>
-      // <div style={{backgroundColor: '#220022'}}>
-      //   <h4>
-      //     Commit id is: {commitData.id}
-      //   </h4>
-      //   <h4>
-      //     Commit user name is: {commitData.user_name}
-      //   </h4>
-      //   <h4>
-      //     Commit category is: {commitData.category}
-      //   </h4>
-      // </div>
     );
   }
 }

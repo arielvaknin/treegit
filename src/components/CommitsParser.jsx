@@ -31,7 +31,7 @@ export class CommitsParser extends React.Component {
               shadowColor="black"
               shadowBlur={5}
               shadowOpacity={0.6} 
-              onClick={() => this.props.handleCommitclick(item.id, item.user_name, item.category)}
+              onClick={() => this.props.handleCommitclick(item.id)}
               />
           ))}
         </Layer>
