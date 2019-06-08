@@ -33,6 +33,8 @@ export class LandingPage extends React.Component {
             filename: '',
             singleCommitData: defaultCommitData,
             selectedCommits: [defaultCommitData, defaultCommitData],
+            analyzing: false,
+            allowToCompare: false,
         }
         this.handleClickOnAnalyze = this.handleClickOnAnalyze.bind(this);
         this.handleFilenameChange = this.handleFilenameChange.bind(this);
@@ -44,7 +46,15 @@ export class LandingPage extends React.Component {
         let selectedCommits = [...this.state.selectedCommits];
         selectedCommits.pop();
         selectedCommits.unshift(data);
-        this.setState( { selectedCommits: selectedCommits } )
+
+        let allowToCompare = this.state.allowToCompare;
+        if (selectedCommits[0].id === 0 || selectedCommits[1].id === 0) {
+            allowToCompare = false;
+        } else {
+            allowToCompare = true;
+        }
+
+        this.setState( { selectedCommits: selectedCommits, allowToCompare: allowToCompare } )
     }
 
     handleCommitclick(id) {
@@ -61,11 +71,12 @@ export class LandingPage extends React.Component {
     }
 
     handleClickOnAnalyze(event) {
+        this.setState({ analyzing: true });
         const filename = this.state.filename;
         const url = API_fileinfo + filename;
            
         axios.get(url)
-            .then(result => this.setState({ dataIn: result.data }))
+            .then(result => this.setState({ dataIn: result.data, analyzing: false }))
             .catch(error => this.setState({ dataIn: defaultDataIn }));
     }
 
@@ -77,6 +88,9 @@ export class LandingPage extends React.Component {
     }
 
     render () {
+        const analyzing = this.state.analyzing;
+        const allowToCompare = this.state.allowToCompare;
+
         return (
             <Container>
                 <img style={{width: '100px', height: '100px'}} src={treegit_image} alt={"logo"}/>
@@ -93,13 +107,18 @@ export class LandingPage extends React.Component {
                     </Col>
                 </Row>
                 
-                <Button variant="primary" onClick={this.handleClickOnAnalyze}>Analyze</Button>
+                <Button variant="primary" onClick={this.handleClickOnAnalyze} disabled={analyzing}>
+                    {analyzing && <span>Analyzing...</span>}
+                    {!analyzing && <span>Analyze</span>}
+                </Button>
                 <Row style={{paddingTop: '50px'}} className="main-row">
                     <Col sm={7}>
                         <CommitsParser dataIn={this.state.dataIn} handleCommitclick={this.handleCommitclick}/>
                     </Col>
                     <Col sm={5}>
-                        <Button variant="primary" onClick={this.handleCompareCommmits}>Compare</Button>
+                        <Button variant="primary" onClick={this.handleCompareCommmits} disabled={!allowToCompare}>
+                            Compare
+                        </Button>
                         { this.state.selectedCommits.map( (item) => <CommitViewer commitData={ item }/>) }
                     </Col>
                 </Row>
