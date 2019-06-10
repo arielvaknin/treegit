@@ -17,7 +17,7 @@ def manipulate_nodes(nodes, category):
     return new_nodes
 
 
-@app.route('/', methods=['GET'])
+@app.route('/')
 def index():
     return render_template('index.html')
     # return 'TreeView: use the next notation in URL: \n /file_info/filePath?<full file name>'
@@ -37,7 +37,7 @@ def commit_info(inner_id):
 @app.route('/file_info')  # Query String to get fileInfo
 def file_info():
     file_path = request.args.get('filePath', None)
-    category = request.args.get('category',  'commit_msg')
+    category = request.args.get('category',  'commit_date')
 
     if file_path is None:
         return 'filePath not supplied!'
@@ -48,7 +48,7 @@ def file_info():
     # Strip file_path from PreFix till Qmatlab_util
     # file_path = file_path[file_path.find('Qmatlab_util'):]
 
-    if 'file_path' not in session or session['file_path'] != file_path:
+    if 'file_path' not in session:
         session['file_path'] = file_path
 
         git_api = GitApi(file_path)        # git_api.get_file_history(file_path)git_api.create_history_graph(file_path)
@@ -95,6 +95,6 @@ def commits_compare():
 
 
 if __name__ == "__main__":
-    app.run(debug=False)
+    app.run(debug=True)
 
 

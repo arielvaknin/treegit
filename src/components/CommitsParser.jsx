@@ -5,22 +5,7 @@ import { parseRowsLocation, parseColLocation, parseUsersToColumns, parseArrows }
 const radius = 20;
 
 export class CommitsParser extends React.Component {
-  // constructor(props) {
-  //   super(props);
-  //   // this.state = {
-  //   //   commitData: {id: '', user_name: '', category: ''}
-  //   // }
-  //   // this.handleCommitclick = this.handleCommitclick.bind(this);
-  // }
-
-  // handleCommitclick(id, user_name, category) {
-  //   console.log('clicked on a commit')
-  //   console.log(`item id is: ${id}`)
-  //   console.log(`item user name is: ${user_name}`)
-  //   console.log(`item category is: ${category}`)
-  //   this.setState({ commitData: { id: id, user_name: user_name, category: category } });
-  // }
-
+  
   render() {   
     const dataIn = this.props.dataIn;
     const rows = parseRowsLocation(dataIn);
@@ -34,17 +19,19 @@ export class CommitsParser extends React.Component {
           {/* commits */}
           {dataIn.nodes.map((item, ind) => (
               <Circle
-                key={item.id}
-                x={usersToColumns[item.user_name]}
-                y={rows[ind]}
-                numPoints={5}
-                Radius={radius}
-                fill="blue"
-                opacity={0.2}
-                shadowColor="black"
-                shadowBlur={10}
-                shadowOpacity={0.6}
-                onClick={() => this.props.handleCommitclick(item.id, item.user_name, item.category)}
+              key={item.id}
+              x={usersToColumns[item.user_name]}
+              y={rows[ind]}
+              numPoints={5}
+              Radius={radius}
+              fill="#4be3ac"
+              stroke='black'
+              strokeWidth={2}
+              opacity={1}
+              shadowColor="black"
+              shadowBlur={5}
+              shadowOpacity={0.6} 
+              onClick={() => this.props.handleCommitclick(item.id)}
               />
           ))}
         </Layer>
@@ -55,7 +42,7 @@ export class CommitsParser extends React.Component {
                 text={item.id}
                 x={usersToColumns[item.user_name] - 5}
                 y={rows[ind] - 10}
-                fontSize='20'
+                fontSize='15'
               />
           ))}
         </Layer>
@@ -69,7 +56,7 @@ export class CommitsParser extends React.Component {
               wrap="char"
               align="center"
               width={70}
-              fontSize='20'
+              fontSize='15'
             /> 
           ))}
         </Layer>
@@ -80,7 +67,8 @@ export class CommitsParser extends React.Component {
                 text={`${item.category}`}
                 x={usersToColumns['Messages']}
                 y={rows[ind] - 10}
-                fontSize='20'
+                fontSize='15'
+                width={150}
               />
           ))}
         </Layer>
@@ -88,11 +76,13 @@ export class CommitsParser extends React.Component {
           {/* Arrows */}
           {arrows.map( item => (
               <Arrow 
-                points={ [item.x1, item.y1 + radius, item.x2, item.y2 - radius] }
-                stroke='red'
-                tension={1}
-                pointerLength={10}
-                pointerWidth={12}
+              points={ [item.x1, item.y1 + radius, item.x2, item.y2 - radius] }
+              stroke='red'
+              strokeWidth={2}
+              tension={1}
+              pointerLength={5}
+              pointerWidth={5}
+              fill='red' 
             />
           ))}
         </Layer>
