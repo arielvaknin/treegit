@@ -45,12 +45,12 @@ class GitApi:
         raise ValueError('Not a valid git repo!')
 
     def _fill_map(self, history):
-        k = len(history)
+        k = 1
         for commit in history:
             if commit.hexsha not in self._map:
                 self._map[commit.hexsha] = k
                 self.nodes.append(self._commit_2_dict(commit, k))
-                k -= 1
+                k += 1
 
     def get_file_history(self):
         history_base = list(self._repo.iter_commits(paths=self.file_path))

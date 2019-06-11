@@ -36,9 +36,9 @@ export function parseArrows(dataIn, usersToColumns, rows) {
 
       arrows.push({
           x1: usersToColumns[user_name_1],
-          y1: rows[rows.length - dataIn.edges[i][0]],
+          y1: rows[dataIn.edges[i][0]-1],
           x2: usersToColumns[user_name_2],
-          y2: rows[rows.length - dataIn.edges[i][1]],
+          y2: rows[dataIn.edges[i][1]-1],
       });
     }
 
