@@ -113,7 +113,11 @@ export class LandingPage extends React.Component {
                 </Button>
                 <Row style={{paddingTop: '50px'}} className="main-row">
                     <Col sm={7}>
-                        <CommitsParser dataIn={this.state.dataIn} handleCommitclick={this.handleCommitclick}/>
+                        <CommitsParser 
+                        dataIn={this.state.dataIn} 
+                        handleCommitclick={this.handleCommitclick}
+                        selectedCommits={this.state.selectedCommits}
+                        />
                     </Col>
                     <Col sm={5}>
                         <Button variant="primary" onClick={this.handleCompareCommmits} disabled={!allowToCompare}>

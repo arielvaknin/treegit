@@ -8,17 +8,20 @@ export class CommitsParser extends React.Component {
   
   render() {   
     const dataIn = this.props.dataIn;
+    const selectedCommits = this.props.selectedCommits;
     const rows = parseRowsLocation(dataIn);
     const cols = parseColLocation(dataIn);
     const usersToColumns = parseUsersToColumns(dataIn, cols);
     const arrows = parseArrows(dataIn, usersToColumns, rows);
 
-    return (
-      <Stage width={ Math.max(...cols)+100 } height={ Math.max(...rows)+100 }>
-        <Layer>
-          {/* commits */}
-          {dataIn.nodes.map((item, ind) => (
-              <Circle
+    function getCircle(parent,item,ind) {
+      let strokeW=1
+
+      if (item.id === selectedCommits[0].id || item.id === selectedCommits[1].id) {
+        strokeW=4;
+      }
+
+      return <Circle
               key={item.id}
               x={usersToColumns[item.user_name]}
               y={rows[ind]}
@@ -26,15 +29,23 @@ export class CommitsParser extends React.Component {
               Radius={radius}
               fill="#4be3ac"
               stroke='black'
-              strokeWidth={2}
               opacity={1}
               shadowColor="black"
               shadowBlur={5}
               shadowOpacity={0.6} 
-              onClick={() => this.props.handleCommitclick(item.id)}
-              />
+              strokeWidth={strokeW}
+              onClick={() => parent.props.handleCommitclick(item.id)}
+           />
+    }
+
+    return (
+      <Stage width={ Math.max(...cols)+100 } height={ Math.max(...rows)+100 }>
+        <Layer>
+          {/* commits */}
+          {dataIn.nodes.map((item, ind) => (
+            getCircle(this,item,ind)
           ))}
-        </Layer>
+        </Layer> 
         <Layer>
           {/* Commit ID */}
           {dataIn.nodes.map((item, ind) => (
@@ -43,6 +54,7 @@ export class CommitsParser extends React.Component {
                 x={usersToColumns[item.user_name] - 5}
                 y={rows[ind] - 10}
                 fontSize='15'
+                onClick={() => this.props.handleCommitclick(item.id)}
               />
           ))}
         </Layer>
@@ -67,8 +79,8 @@ export class CommitsParser extends React.Component {
                 text={`${item.category}`}
                 x={usersToColumns['Messages']}
                 y={rows[ind] - 10}
-                fontSize='15'
-                width={150}
+                fontSize='10'
+                width={250}
               />
           ))}
         </Layer>
